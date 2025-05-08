@@ -1,32 +1,61 @@
-# -ITC-Financial-Analysis
+📊 ITC Financial Analysis with AI Scraping & LLM Integration
+🧠 Overview
+This project enables users to explore ITC's financial data through intelligent question-answering using semantic search and large language models (LLMs). By scraping and embedding ITC’s financial reports, press releases, and stock data, users can ask questions like:
 
-Use Case: ITC Financial Analysis with AI Scraping & LLM Integration 
-Overview
-This project allows users to search through  ITC Financial Analysis questions and answers using semantic search. It leverages LangChain and Chroma to process text embeddings and retrieve the most relevant answers based on user queries.
+What was ITC’s revenue in 2024?
 
-The app provides an interactive interface where users can input a query, and it returns the most relevant documents (questions, answers) based on semantic search using SentenceTransformers and ChromaDB.
+Is ITC’s revenue trending upward (2023 vs. 2024)?
 
-Technologies Used
-Tavily API: this api used for the scrapping the pdfs
+The system retrieves the most relevant context and provides intelligent answers using modern AI techniques.
 
-Streamlit: Web framework for building the interactive app.
+🚀 Features
+🔍 Semantic Search: Retrieves the most relevant documents using SentenceTransformer embeddings and ChromaDB.
 
-LangChain: To build the pipeline for semantic search.
+📑 PDF Scraping: Tavily API scrapes ITC financial data from web sources.
 
-ChromaDB: For storing and querying the document embeddings.
+🌐 Interactive Web Interface: Built using Streamlit for user-friendly querying and result visualization.
 
-Sentence-Transformers: For generating text embeddings from the documents.
+📦 Document Storage: Stores extracted content and embeddings in ChromaDB and SQLite.
 
-Google Generative AI Embeddings: For generating embeddings of the documents and queries.
+🧠 Model Integration: Uses Sentence-Transformers and LLMs for understanding and answering queries.
 
-Features
-Tavily API: this api used for the scrapping the pdfs
+⚡ Fast Retrieval: Optimized querying using Chroma vector store for speed and relevance.
 
-Interactive Web Interface: Built using Streamlit.
+📈 Financial Reasoning: Capable of answering questions about trends, revenue, stock prices, and profitability.
 
-Semantic Search: Provides relevant answers to user queries using embedding-based search with ChromaDB.
+🛠️ Technologies Used
+Tavily API: For scraping PDFs and extracting text from ITC’s investor pages.
 
-Document Storage: Stores document embeddings and metadata in ChromaDB for fast retrieval.
+Streamlit: For creating the interactive web interface.
 
-Model Integration: Uses Google Generative AI model for embedding-based search.
+LangChain: For building the retrieval-based QA pipeline.
 
+ChromaDB: As a local vector database for embedding storage and similarity search.
+
+SQLite: For storing raw document text and metadata.
+
+Sentence-Transformers: For converting text content into high-dimensional semantic embeddings.
+
+Google Generative AI (or Hugging Face Transformers): For optional LLM-based question answering and summarization.
+
+🧪 Example Questions
+🧾 What was ITC’s revenue in 2024?
+
+💰 What was ITC’s profitability in 2023?
+
+📈 Is ITC’s revenue trending upward (2023 vs. 2024)?
+
+📉 What was ITC’s stock price on May 10, 2025?
+
+🔄 Workflow
+Scrape Documents → Using Tavily API to fetch PDFs and HTML content from ITC’s investor portal.
+
+Extract & Clean Text → Convert PDF/HTML content to plain text.
+
+Generate Embeddings → Use SentenceTransformer or Google AI to embed documents.
+
+Store in ChromaDB → Save document embeddings with metadata for retrieval.
+
+Build Streamlit App → Let users ask natural language questions.
+
+Retrieve + Respond → Return answers using nearest neighbors + optional LLM summarization.
