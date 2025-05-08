@@ -1,78 +1,149 @@
-📊 ITC Financial Analysis with AI Scraping & LLM Integration
+# 💼Unlock ITC’s Financial Data with AI-Powered Query Analysis
 
+A complete AI-powered system to analyze ITC Ltd.'s financial reports, investor presentations, and stock price history. The system enables natural language Q&A with **source citation** and provides **semantic search** over all collected documents using embeddings.
 
-🧠 Overview
-This project enables users to explore ITC's financial data through intelligent question-answering using semantic search and large language models (LLMs). By scraping and embedding ITC’s financial reports, press releases, and stock data, users can ask questions like:
+---
 
-What was ITC’s revenue in 2024?
+## 🚀 Key Features
 
-Is ITC’s revenue trending upward (2023 vs. 2024)?
+- ✅ **Data scraping** (annual reports, investor presentations, stock price history)
+- ✅ **Document embeddings** for semantic search
+- ✅ **Natural language Q&A** powered by LLMs
+- ✅ **Source citation** in every answer
+- ✅ Easy-to-use **Streamlit app interface**
+- ✅ **Secure Hugging Face token entry** (no token is stored in the code)
 
-The system retrieves the most relevant context and provides intelligent answers using modern AI techniques.
+---
 
+## 📥 Data Collection
 
+The data collection process gathers ITC Ltd.’s **financial reports, investor presentations, and stock price history** to build a rich dataset.
 
+### 🔑 Tavily API
 
-🚀 Features
-🔍 Semantic Search: Retrieves the most relevant documents using SentenceTransformer embeddings and ChromaDB.
+I used the **Tavily API** to scrape reports and presentations directly from ITC’s investor relations website.
 
-📑 PDF Scraping: Tavily API scrapes ITC financial data from web sources.
+**Steps:**
 
-🌐 Interactive Web Interface: Built using Streamlit for user-friendly querying and result visualization.
+1️⃣ Get your own **Tavily API key:**  
+➡️ [https://www.tavily.com/](https://www.tavily.com/)
 
-📦 Document Storage: Stores extracted content and embeddings in ChromaDB and SQLite.
+2️⃣ Use the API key in the scraping script (you’ll be securely prompted to enter it).
 
-🧠 Model Integration: Uses Sentence-Transformers and LLMs for understanding and answering queries.
+**Scraping script:**  
+👉 [`data_scraper.py`](./data_scraper.py)
 
-⚡ Fast Retrieval: Optimized querying using Chroma vector store for speed and relevance.
+The script fetches:
 
-📈 Financial Reasoning: Capable of answering questions about trends, revenue, stock prices, and profitability.
+- 🗂 **Annual reports** (PDFs)
+- 🗂 **Investor presentations**
+- 📈 **Stock price history**
 
+### 🗄️ Database Setup
 
+A **SQLite database** is used to store metadata and extracted document text.
 
+**Database table schema:**
 
-
-
-🛠️ Technologies Used
-Tavily API: For scraping PDFs and extracting text from ITC’s investor pages.
-
-Streamlit: For creating the interactive web interface.
-
-LangChain: For building the retrieval-based QA pipeline.
-
-ChromaDB: As a local vector database for embedding storage and similarity search.
-
-SQLite: For storing raw document text and metadata.
-
-Sentence-Transformers: For converting text content into high-dimensional semantic embeddings.
-
-Google Generative AI (or Hugging Face Transformers): For optional LLM-based question answering and summarization.
-
-
-
-
-
-🧪 Example Questions
-🧾 What was ITC’s revenue in 2024?
-
-💰 What was ITC’s profitability in 2023?
-
-📈 Is ITC’s revenue trending upward (2023 vs. 2024)?
-
-📉 What was ITC’s stock price on May 10, 2025?
+    ```sql
+    CREATE TABLE IF NOT EXISTS document_metadata (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        year INTEGER,
+        file_name TEXT,
+        description TEXT,
+        content TEXT
+    );
 
 
 
 
-🔄 Workflow
-Scrape Documents → Using Tavily API to fetch PDFs and HTML content from ITC’s investor portal.
+# **Document Embedding and Querying with ChromaDB and Hugging Face's Llama-3.3-70B-Instruct**
 
-Extract & Clean Text → Convert PDF/HTML content to plain text.
+## **Overview**
 
-Generate Embeddings → Use SentenceTransformer or Google AI to embed documents.
+In this approach, we leverage two powerful tools: **Sentence Transformers** for document embedding and **ChromaDB** for storing these embeddings in a vector database. The embeddings are used to enable semantic search and retrieval of relevant documents. For querying, we use the **Llama-3.3-70B-Instruct** model from **Hugging Face**, which generates natural language responses based on the embedded content.
 
-Store in ChromaDB → Save document embeddings with metadata for retrieval.
+## **Sentence Transformers for Document Embeddings**
 
-Build Streamlit App → Let users ask natural language questions.
+### **What are Embeddings?**
 
-Retrieve + Respond → Return answers using nearest neighbors + optional LLM summarization.
+Embeddings are dense vector representations of text that capture the semantic meaning of words, sentences, or documents. By converting text into embeddings, we allow the system to understand the content in a form that can be mathematically compared and searched.
+
+**Sentence Transformers** is a popular library for generating sentence-level embeddings. It takes a piece of text and converts it into a fixed-size vector of numbers that captures the meaning of that text.
+
+### **Why Sentence Transformers?**
+
+Sentence Transformers provide high-quality embeddings that allow us to:
+- **Compare texts** by calculating the cosine similarity between embeddings.
+- **Cluster similar documents** and perform tasks like search and classification efficiently.
+
+In our case, we use a pre-trained Sentence Transformer model such as `all-MiniLM-L6-v2`, which is known for its efficiency and accuracy in generating embeddings for short texts and documents.
+
+## **ChromaDB for Storing Embeddings**
+
+### **What is ChromaDB?**
+
+ChromaDB is a vector database that allows you to store and search for embeddings in a highly optimized way. By using ChromaDB, we can store the embeddings of documents and then perform efficient similarity searches over large datasets.
+
+### **How ChromaDB Works?**
+
+- **Document Insertion:** After generating embeddings for documents using Sentence Transformers, ChromaDB stores the embeddings along with metadata like the document’s title, year, or any other relevant information.
+- **Querying:** When a user submits a query, we also embed the query text into a vector and search for the most similar document embeddings in the database. ChromaDB returns the documents that are semantically most relevant to the query.
+
+### **Why ChromaDB?**
+
+ChromaDB offers several advantages for handling embeddings:
+- It provides a **fast** and **scalable** solution for vector searches.
+- It stores both the vector embeddings and metadata, enabling rich searches with context.
+
+## **Hugging Face’s Llama-3.3-70B-Instruct for Querying**
+
+### **What is Llama-3.3-70B-Instruct?**
+
+Llama-3.3-70B-Instruct is a state-of-the-art transformer model from **Hugging Face** that is fine-tuned for instruction-based tasks. It excels in generating coherent, natural language responses to user queries. 
+
+### **Why Use Llama for Querying?**
+
+Llama is designed to handle complex language tasks:
+- **Interpret complex queries**: It can understand user input and interpret queries in a natural, conversational manner.
+- **Generate answers**: Based on the embedded documents, Llama can generate responses that are more contextually accurate and coherent.
+
+### **How Llama Helps in this Pipeline?**
+
+After retrieving the most relevant document embeddings from ChromaDB, we pass the results to the Llama-3.3-70B-Instruct model. Llama processes the input and generates human-readable text in response to the query, making it easier to extract meaningful insights from a large dataset.
+
+## **End-to-End Workflow**
+
+1. **Embedding Documents:** Documents are first converted into embeddings using **Sentence Transformers**, capturing their semantic meaning.
+2. **Storing Embeddings:** These embeddings, along with metadata (such as year, file name), are stored in **ChromaDB** for efficient retrieval.
+3. **Querying with Llama:** When a user submits a query, we convert the query into an embedding and search for the closest document embeddings in **ChromaDB**.
+4. **Generating Response:** The relevant documents are passed to the **Llama-3.3-70B-Instruct** model, which generates a coherent response based on the content of those documents.
+
+## **Conclusion**
+
+This approach combines powerful tools to process, store, and query large sets of documents. By using **Sentence Transformers** and **ChromaDB** for document embeddings and storage, coupled with **Llama-3.3-70B-Instruct** for natural language querying, this solution provides an efficient, scalable way to analyze and retrieve information from unstructured text data.
+
+With this architecture, you can perform semantic search, retrieve relevant documents, and generate meaningful responses for your queries, all powered by cutting-edge machine learning models and optimized database technologies.
+
+---
+
+## 🛠️ Tech Stack
+
+- Python 3.10+
+- Streamlit
+- ChromaDB
+- Hugging Face Transformers
+- LangChain
+- FAISS
+- Pydantic
+- Other supporting libraries (see `requirements.txt`)
+
+---
+
+## 🔧 Installation & Setup
+
+1️⃣ **Clone the repository:**
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
